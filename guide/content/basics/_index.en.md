@@ -3,7 +3,7 @@ title = "Getting started"
 date = 2024-06-08T07:33:02+08:00
 weight = 5
 chapter = true
-pre = "<b></b>"
+pre = "<b>1. </b>"
 +++
 
 # Kubernetes Cluster Building and Installation Guide
