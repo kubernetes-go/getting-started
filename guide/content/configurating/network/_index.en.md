@@ -1,8 +1,7 @@
 ---
-title: Operating system you are using
-weight: 5
+title: Network Settings
+weight: 1
 pre: "<b></b>"
 chapter: true
 ---
-
 {{% children  %}}

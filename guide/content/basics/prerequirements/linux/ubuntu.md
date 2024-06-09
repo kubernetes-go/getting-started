@@ -17,6 +17,8 @@ In this section, you will learn how to create two Ubuntu virtual machines (VMs) 
 
 ### Step 1: Install VirtualBox
 
+> More information on installing VirtualBox can be found [here](https://www.virtualbox.org/wiki/Linux_Downloads).
+
 1. Open a terminal on your Ubuntu host.
 2. Add the Oracle VirtualBox repository:
 

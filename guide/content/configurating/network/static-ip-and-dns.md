@@ -1,11 +1,11 @@
 ---
-title: Configuring the network of Kubernetes Node
-weight: 10
+title: IP and DNS 
+weight: 6
+pre: "<b></b>"
 chapter: true
-pre: "<b>2. </b>"
 ---
 
-## Configuring Network Settings for Kubernetes Nodes
+##  Network - IP and DNS
 
 In this section, you will learn how to configure the network settings for your Ubuntu VMs to ensure they are on the same local network segment. This is necessary for both control plane and worker nodes. We will set a default route through the shared router and assign static IP addresses to each VM.
 
@@ -15,21 +15,27 @@ Ensure that each VM is connected to the same virtual switch that bridges to your
 
 1. Open a terminal on each VM and verify the network configuration with the following command:
 
-    ```bash
-    ip route
-    ```
+```bash
+ip route show
+```
 
-    The output should include a default route that points to your physical network's router. For example:
+The output should include a default route that points to your physical network's router. For example:
 
-    ```plaintext
-    default via 192.168.10.1 dev eth0
-    ```
+```plaintext
+default via 192.168.10.1 dev eth0
+```
 
 2. If the default route is missing or incorrect, you may need to recheck your VirtualBox network settings to ensure the "Bridged Adapter" is properly configured.
 
+```sh
+sudo ip route del default
+sudo ip route add default via 192.168.10.1 dev eth0 proto static # 192.168.10.1 is the IP address of your router.
+ip route show
+```
+
 ### Step 2: Assign Static IP Addresses
 
-To assign static IP addresses to each VM, edit the network configuration file. The configuration will vary slightly depending on whether you are using `netplan` (common in newer Ubuntu versions) or `ifupdown` (common in older versions).
+To assign static IP addresses to each VM, edit the network configuration file. The configuration will vary slightly depending on whether you are using `netplan` (common in newer Ubuntu versions).
 
 #### Using Netplan (Ubuntu 18.04 and later)
 
