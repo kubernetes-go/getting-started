@@ -2,15 +2,15 @@ baseURL = "/"
 languageCode = "en-US"
 defaultContentLanguage = "en"
 
-title = "KubeGuide"
+title = "KuberGuide - Learn to build self-hosted Kubernetes cluster"
 theme = "hugo-theme-learn"
 metaDataFormat = "yaml"
 defaultContentLanguageInSubdir= true
 
 [params]
-  editURL = "https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/"
+  editURL = "https://github.com/kubernetes-go/getting-started/edit/main/guide/content/"
   description = "Documentation for Hugo Learn Theme"
-  author = "Mathieu Cornic"
+  author = "Wu Jun"
   showVisitedLinks = true
   disableBreadcrumb = false
   disableNextPrev = false
@@ -25,7 +25,7 @@ home = [ "HTML", "RSS", "JSON"]
 
 [Languages]
 [Languages.en.params]
-title = "Documentation for Hugo Learn Theme"
+title = "KuberGuide - Learn to build self-hosted Kubernetes cluster"
 weight = 1
 languageName = "English"
 landingPageURL = "/en"
