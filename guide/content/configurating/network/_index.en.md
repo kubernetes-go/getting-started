@@ -1,6 +1,6 @@
 ---
 title: Network Settings
-weight: 1
+weight: 4
 pre: "<b></b>"
 chapter: true
 ---

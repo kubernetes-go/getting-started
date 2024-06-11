@@ -34,6 +34,7 @@ To get started with the documentation site, you'll need to have [Hugo](https://g
 ```bash
 git clone https://github.com/kubernetes-go/getting-started.git
 cd getting-started
+git submodule update --init --recursive
 cd ./guide
 hugo server -D
 ```

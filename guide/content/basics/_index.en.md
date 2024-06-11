@@ -1,7 +1,7 @@
 +++
 title = "Getting started"
 date = 2024-06-08T07:33:02+08:00
-weight = 5
+weight = 1
 chapter = true
 pre = "<b>1. </b>"
 +++

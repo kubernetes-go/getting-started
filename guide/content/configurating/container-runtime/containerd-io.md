@@ -7,6 +7,8 @@ chapter: true
 
 ## Installing Containerd, runc, and CNI on Ubuntu VMs for Kubernetes Nodes
 
+> More details can be found form https://github.com/containerd/containerd/blob/main/docs/getting-started.md
+
 In this guide, you will learn how to install `containerd`, `runc`, and `CNI` plugins on Ubuntu virtual machines, and verify the setup by pulling and running a Redis image. Additionally, you will install `nerdctl` to manage images and containers.
 
 ### Step 1: Update System Packages
