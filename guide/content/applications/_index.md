@@ -1,6 +1,6 @@
 ---
-title: Self Hosted Applications
-weight: 4
+title: Hosting Applications
+weight: 5
 chapter: true
 pre: "<b>4. </b>"
 ---

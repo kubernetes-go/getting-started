@@ -1,6 +1,6 @@
 ---
 title: Intsall kubeadm/kubectl/kubelet
-weight: 1
+weight: 3
 pre: "<b></b>"
 chapter: true
 ---

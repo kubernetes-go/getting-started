@@ -1,7 +1,8 @@
 ---
-title: Network Settings
+title: CI/CD
 weight: 1
-pre: "<b></b>"
 chapter: true
+pre: "<b></b>"
 ---
+
 {{% children  %}}

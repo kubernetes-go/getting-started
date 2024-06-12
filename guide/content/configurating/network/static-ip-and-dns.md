@@ -1,6 +1,6 @@
 ---
 title: IP and DNS 
-weight: 6
+weight: 1
 pre: "<b></b>"
 chapter: true
 ---
