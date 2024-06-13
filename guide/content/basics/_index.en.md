@@ -12,16 +12,6 @@ pre = "<b>1. </b>"
 
 Welcome to the Kubernetes Cluster Building and Installation Guide. This tutorial will take you step-by-step through the process of setting up and installing a fully functional Kubernetes cluster. Whether you are a beginner or an experienced developer, this guide will help you master the basics and advanced operations of Kubernetes.
 
-## Documentation Modules
-
-1. [Choosing the Operating System for Your Kubernetes Cluster](#choosing-the-operating-system-for-your-kubernetes-cluster)
-2. [Installing and Configuring Necessary Dependencies](#installing-and-configuring-necessary-dependencies)
-3. [Setting Up the Kubernetes Control Plane](#setting-up-the-kubernetes-control-plane)
-4. [Joining Nodes to the Kubernetes Cluster](#joining-nodes-to-the-kubernetes-cluster)
-5. [Configuring Networking for Kubernetes](#configuring-networking-for-kubernetes)
-6. [Deploying Applications on Kubernetes](#deploying-applications-on-kubernetes)
-7. [Monitoring and Maintaining Your Kubernetes Cluster](#monitoring-and-maintaining-your-kubernetes-cluster)
-
 ## Prerequisites
 
 Before you start, make sure you have the following knowledge and resources:
@@ -45,6 +35,4 @@ Before you start, make sure you have the following knowledge and resources:
 
 ## Getting Started
 
-To get started, proceed to the first article in this guide:
-
-### [Choosing the Operating System for Your Kubernetes Cluster - Ubuntu](#choosing-the-operating-system-for-your-kubernetes-cluster---ubuntu)
+{{% children  %}}

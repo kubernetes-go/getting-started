@@ -1,5 +1,5 @@
 ---
-title: Create Cluster
+title: Creating Cluster
 weight: 3
 chapter: true
 pre: "<b>3. </b>"

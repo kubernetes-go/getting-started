@@ -36,7 +36,7 @@ git clone https://github.com/kubernetes-go/getting-started.git
 cd getting-started
 git submodule update --init --recursive
 cd ./guide
-hugo server -D
+hugo serve --bind 0.0.0.0 --baseURL http://0.0.0.0:1313  --port 1313
 ```
 
 Open your browser and visit `http://localhost:1313` to see the site in action.
