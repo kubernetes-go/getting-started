@@ -200,7 +200,7 @@ or just run a simple cmd
 
 ```sh
 curl http://192.168.5.200
-```sh
+```
 
 
 if successed, we can delete the nginx
