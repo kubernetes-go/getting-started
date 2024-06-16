@@ -216,7 +216,7 @@ Replace <YOUR_EMAIL> with your email address.
 **Apply the Updated Configuration**
 Upgrade your Traefik installation with the new configuration.
 ```sh
-helm upgrade --install traefik traefik/traefik -f values.yaml --namespace=traefik-v2
+helm upgrade --install traefik traefik/traefik -f values.traefik.yaml --namespace=traefik-v2
 ```
 
 ### Update the IngressRoute for TLS
@@ -345,7 +345,7 @@ ingressRoute:
 
 
 ```sh
-helm upgrade --install traefik traefik/traefik -f values.yaml --namespace=traefik-v2
+helm upgrade --install traefik traefik/traefik -f values.traefik.yaml --namespace=traefik-v2
 ```
 
 then apply the ingress route 
