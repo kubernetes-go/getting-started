@@ -176,7 +176,7 @@ EOF
 
 ### Update the Traefik Helm Configuration
 
-Create a Traefik values override file traefik-values.yaml with the following content:
+Create a Traefik values override file `values.traefik.yaml` with the following content:
 
 ```yaml
 env:
@@ -216,7 +216,7 @@ Replace <YOUR_EMAIL> with your email address.
 **Apply the Updated Configuration**
 Upgrade your Traefik installation with the new configuration.
 ```sh
-helm upgrade traefik traefik/traefik --namespace kube-system --values traefik-values.yaml
+helm upgrade --install traefik traefik/traefik -f values.yaml --namespace=traefik-v2
 ```
 
 ### Update the IngressRoute for TLS
@@ -252,3 +252,124 @@ https://www.foo-bar-local.com
 ```
 
 Your browser should display a secure connection with a Let's Encrypt certificate.
+
+## Force rediect to HTTPS from HTTP
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-http-to-https
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+```
+
+and use it for your ingress route
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: whoami-ingressroute-http
+  namespace: default
+
+spec:
+  entryPoints:
+    - web
+
+  routes:
+  - match: Host(`www.foo-bar-local.com`)
+    middlewares:
+      - name: redirect-http-to-https
+    kind: Rule
+    services:
+    - name: whoami
+      port: 80
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: whoami-ingressroute-https
+  namespace: default
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+  - match: Host(`www.foo-bar-local.com`)
+    kind: Rule
+    services:
+    - name: whoami
+      port: 80
+  tls:
+    certResolver: letsencrypt
+```
+It will redirect to https from http.
+
+
+
+## Access Traefik Dashboard
+
+
+```sh
+kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name) 9000:9000
+```
+
+then open url `http://127.0.0.1:9000/dashboard/#/` in browser.
+
+
+### Expose Dashboard via Ingress Route
+
+update your `values.traefik.yaml`
+
+```yaml
+additionalArguments: 
+  - "--serversTransport.insecureSkipVerify=true" 
+  - "--api.insecure=true" 
+  - "--api.dashboard=true"
+
+ports:
+  traefik:
+    expose:
+      default: true
+
+ingressRoute:
+  dashboard:
+    # -- Create an IngressRoute for the dashboard
+    enabled: false
+```
+
+
+```sh
+helm upgrade --install traefik traefik/traefik -f values.yaml --namespace=traefik-v2
+```
+
+then apply the ingress route 
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard-ingress-route
+  namespace: traefik-v2
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`traefik.foo-bar-local.com`) && PathPrefix(`/dashboard`)
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService
+    - match: Host(`traefik.foo-bar-local.com`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService
+  tls:
+    certResolver: letsencrypt
+```
