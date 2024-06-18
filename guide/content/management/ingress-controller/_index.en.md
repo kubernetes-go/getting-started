@@ -11,7 +11,7 @@ pre: "<b></b>"
 
 - A running Kubernetes cluster with MetalLB configured for external IP allocation.
 - `kubectl` command-line tool configured to interact with your cluster.
-- Helm installed in your cluster, if not, please do as [USING HELM FOR LOCAL CONTINUOUS DELIVERY WITH KUBERNETES]({{< ref "management/ci-cd/helm.md" >}}).
+- Helm installed in your cluster, if not, please do as [USING HELM FOR LOCAL CONTINUOUS DELIVERY WITH KUBERNETES]({{% ref "management/ci-cd/helm.md" %}}).
 - Access to modify the hosts file on your host machine.
 and run the following cmd
 
@@ -155,7 +155,7 @@ http://www.foo-bar-local.com
 
 ### Prerequisites
 - A registered domain name with Cloudflare.
-- A configured StorageClass in your Kubernetes cluster (e.g., NFS) for persistent storage required by Traefik to store Let's Encrypt certificates, you can install [Network File System(NFS) Storage Class for Kubernetes]({{< ref "management/storage/nfs.md" >}}).
+- A configured StorageClass in your Kubernetes cluster (e.g., NFS) for persistent storage required by Traefik to store Let's Encrypt certificates, you can install [Network File System(NFS) Storage Class for Kubernetes]({{% ref "management/storage/nfs.md" %}}).
 - A Cloudflare API token with permissions to manage DNS, more detail can be found from [developers.cloudflare.com/create-token](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/)
 
 

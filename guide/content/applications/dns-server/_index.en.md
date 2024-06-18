@@ -86,7 +86,7 @@ pihole-web   LoadBalancer   10.100.211.100   192.168.5.202   80:30127/TCP,443:30
 
 ## Add customize domain for you pi-hole admin portal
 
-apply the following ingress route if you already installed [TRAEFIK AS INGRESS CONTROLLER]({{< ref "management/ingress-controller/_index.md" >}}).
+apply the following ingress route if you already installed [TRAEFIK AS INGRESS CONTROLLER]({{% ref "management/ingress-controller/_index.md" %}}).
 
 ```yaml
 apiVersion: traefik.io/v1alpha1
@@ -137,4 +137,66 @@ spec:
       
   tls:
     certResolver: letsencrypt
+```
+
+## Set Pi-Hole as Upstream Dns Server to CoreDns
+
+get the external IP of `pihole-dns-tcp`
+
+```sh
+kubectl get svc -n default pihole-dns-tcp
+NAME             TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
+pihole-dns-tcp   LoadBalancer   10.105.21.63   192.168.5.202   53:30891/TCP   2d1h
+```
+
+edit your `values.pi-hole.yaml`, add these
+
+```yaml
+dnsmasq:
+  customDnsEntries:
+    - address=/pihole.prod.local/192.168.5.202
+```
+
+then update your helm release 
+
+```sh
+helm upgrade --install pihole mojo2600/pihole -f values.pi-hole.yaml
+```
+
+### Add config for CoreDns
+
+```sh
+vi coredns-custom.yaml
+```
+
+edit it to 
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  custom.server: |
+    prod.local:53 {
+       errors
+       cache 30
+       forward . 192.168.5.202
+    }
+```
+  {{% notice style="tip" %}}
+this means all requestes to domain `prod.local` will query the dns record from server `192.168.5.202`. `prod.local` can be replaced bu your customerize domian.
+  {{% /notice %}}
+
+then try to monitor the logs 
+
+```sh
+kubectl logs -n kube-system -l k8s-app=kube-dns
+```
+
+if coredns pods does not restart, please try to triiger manually
+
+```sh
+kubectl rollout restart deployment coredns -n kube-system
 ```

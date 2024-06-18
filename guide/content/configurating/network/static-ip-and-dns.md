@@ -79,10 +79,3 @@ ping -c 4 google.com
 # Ping Kubernetes official image repository
 ping -c 4 k8s.gcr.io
 ```
-
-
-### Next Step
-
-Proceed to the next article:
-
-### [Setting Up the Kubernetes Control Plane](#setting-up-the-kubernetes-control-plane)

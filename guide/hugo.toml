@@ -1,32 +1,114 @@
-baseURL = "/"
-languageCode = "en-US"
-defaultContentLanguage = "en"
-
-title = "KuberGuide - Learn to build self-hosted Kubernetes cluster"
-theme = "hugo-theme-learn"
-metaDataFormat = "yaml"
-defaultContentLanguageInSubdir= true
-
+baseURL = 'https://docs.kuberguide.org/'
+languageCode = 'en-us'
+title = 'KuberGuide - Guide to self hosted Kubernetes'
+theme = 'hugo-theme-relearn'
+defaultContentLanguage = 'en'
 [params]
-  editURL = "https://github.com/kubernetes-go/getting-started/edit/main/guide/content/"
-  description = "Documentation for Hugo Learn Theme"
-  author = "Wu Jun"
-  showVisitedLinks = true
+  additionalContentLanguage = ['en']
+  alwaysopen = ''
+  breadcrumbSeparator = '>'
+  collapsibleMenu = true
+  customMathJaxURL = ''
+  customMermaidURL = ''
+  customOpenapiURL = ''
+  disableAssetsBusting = false
   disableBreadcrumb = false
-  disableNextPrev = false
+  disableExplicitIndexURLs = false
+  disableGeneratorVersion = false
+  disableHoverBlockCopyToClipBoard = false
+  disableInlineCopyToClipBoard = true
   disableLandingPageButton = true
-  disableMermaid = false
-  customMermaidURL = "https://unpkg.com/mermaid@8.8.0/dist/mermaid.min.js"
-  titleSeparator = "::"
-  themeVariant = "blue"
+  disableLanguageSwitchingButton = false
+  disableMathJax = true
+  disableMermaid = true
+  disableNextPrev = false
+  disableOpenapi = true
+  disableRandomIds = false
+  disableRootBreadcrumb = true
+  disableSearch = false
+  disableSearchHiddenPages = false
+  disableSeoHiddenPages = true
+  disableShortcutsTitle = false
+  disableTagHiddenPages = false
+  disableTermBreadcrumbs = false
+  disableToc = false
+  editURL = 'https://github.com/kubernetes-go/getting-started/edit/main/guide/content/${FilePath}'
+  externalLinkTarget = '_self'
+  highlightWrap = true
+  images = ['images/hero.png']
+  mathJaxInitialize = '{}'
+  mermaidInitialize = '{ "securityLevel": "loose" }'
+  mermaidZoom = true
+  ordersectionsby = 'weight'
+  showVisitedLinks = true
+  titleSeparator = '::'
 
-[outputs]
-home = [ "HTML", "RSS", "JSON"]
+  [params.author]
+    name = 'Wu Jun'
 
-[Languages]
-[Languages.en.params]
-title = "KuberGuide - Learn to build self-hosted Kubernetes cluster"
-weight = 1
-languageName = "English"
-landingPageURL = "/en"
-landingPageName = "<i class='fas fa-home'></i> Home"
+  [params.image]
+    errorlevel = 'error'
+
+  [params.imageEffects]
+    border = true
+    lazy = true
+    lightbox = true
+    shadow = false
+
+  [params.include]
+    errorlevel = 'error'
+
+  [params.link]
+    errorlevel = 'error'
+
+  [params.openapi]
+    errorlevel = 'error'
+
+  [params.social]
+    facebook_admin = ''
+    twitter = ''
+
+  [[params.themeVariant]]
+    auto = []
+    identifier = 'relearn-auto'
+    name = 'Relearn Light/Dark'
+
+  [[params.themeVariant]]
+    identifier = 'relearn-light'
+
+  [[params.themeVariant]]
+    identifier = 'relearn-dark'
+
+  [[params.themeVariant]]
+    identifier = 'relearn-bright'
+
+  [[params.themeVariant]]
+    auto = ['zen-light', 'zen-dark']
+    identifier = 'zen-auto'
+    name = 'Zen Light/Dark'
+
+  [[params.themeVariant]]
+    identifier = 'zen-light'
+
+  [[params.themeVariant]]
+    identifier = 'zen-dark'
+
+  [[params.themeVariant]]
+    auto = ['learn', 'neon']
+    identifier = 'retro-auto'
+    name = 'Retro Learn/Neon'
+
+  [[params.themeVariant]]
+    identifier = 'neon'
+
+  [[params.themeVariant]]
+    identifier = 'learn'
+
+  [[params.themeVariant]]
+    identifier = 'blue'
+
+  [[params.themeVariant]]
+    identifier = 'green'
+
+  [[params.themeVariant]]
+    identifier = 'red'
