@@ -86,7 +86,7 @@ pihole-web   LoadBalancer   10.100.211.100   192.168.5.202   80:30127/TCP,443:30
 
 ## Add customize domain for you pi-hole admin portal
 
-apply the following ingress route if you already installed [TRAEFIK AS INGRESS CONTROLLER]({{% ref "management/ingress-controller/_index.md" %}}).
+apply the following ingress route if you already installed [TRAEFIK AS INGRESS CONTROLLER]({{% ref "management/ingress-controller" %}}).
 
 ```yaml
 apiVersion: traefik.io/v1alpha1
