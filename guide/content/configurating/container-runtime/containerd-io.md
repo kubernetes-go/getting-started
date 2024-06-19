@@ -51,12 +51,28 @@ set `SystemdCgroup` to `true` in the `plugins.cri.containerd.runtimes.runc.optio
     SystemdCgroup = true
 ```
 
+### In case network issue
+
+```sh
+sudo mkdir -p /etc/systemd/system/containerd.service.d
+sudo vi /etc/systemd/system/containerd.service.d/http-proxy.conf
+```
+
+```
+[Service]
+Environment="HTTP_PROXY=http://192.168.137.1:7890"
+Environment="HTTPS_PROXY=http://192.168.137.1:7890"
+Environment="NO_PROXY=localhost"
+```
 
 ### Restart and enable the containerd service:
 
 ```sh
+sudo systemctl daemon-reload
 sudo systemctl restart containerd
+sudo systemctl start containerd
 sudo systemctl enable containerd
+sudo systemctl status containerd
 ```
 
 ### Step 3: Install runc

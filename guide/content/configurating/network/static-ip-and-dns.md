@@ -37,35 +37,46 @@ ip route show
 
 To assign static IP addresses to each VM, edit the network configuration file. The configuration will vary slightly depending on whether you are using `netplan` (common in newer Ubuntu versions).
 
-#### Using Netplan (Ubuntu 18.04 and later)
+```sh
+vi /etc/systemd/resolved.conf
+```
 
-1. Open the netplan configuration file in a text editor:
+```conf
+[Resolve]
+# Some examples of DNS servers which may be used for DNS= and FallbackDNS=:
+# Cloudflare: 1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com
+# Google:     8.8.8.8#dns.google 8.8.4.4#dns.google 2001:4860:4860::8888#dns.google 2001:4860:4860::8844#dns.google
+# Quad9:      9.9.9.9#dns.quad9.net 149.112.112.112#dns.quad9.net 2620:fe::fe#dns.quad9.net 2620:fe::9#dns.quad9.net
+DNS=8.8.8.8
+#FallbackDNS=
+#Domains=
+#DNSSEC=no
+#DNSOverTLS=no
+#MulticastDNS=no
+#LLMNR=no
+#Cache=no-negative
+#CacheFromLocalhost=no
+#DNSStubListener=yes
+#DNSStubListenerExtra=
+#ReadEtcHosts=yes
+#ResolveUnicastSingleLabel=no
+#StaleRetentionSec=0
+```
 
-    ```bash
-    sudo nano /etc/netplan/01-netcfg.yaml
-    ```
+```sh
+sudo rm /etc/resolv.conf
+sudo service systemd-resolved restart
+sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+sudo cat /etc/resolv.conf
+```
 
-2. Configure the file to set a static IP address. Below is an example configuration for the control plane node (192.168.10.100):
+verify
 
-    ```yaml
-    network:
-      version: 2
-      ethernets:
-        eth0:
-          addresses:
-            - 192.168.10.100/24
-          gateway4: 192.168.10.1
-          nameservers:
-            addresses:
-              - 8.8.8.8
-              - 8.8.4.4
-    ```
-
-3. Apply the netplan configuration:
-
-    ```bash
-    sudo netplan apply
-    ```
+```sh
+dig +trace apple.com
+dig +trace baidu.com
+dig +trace acme-v02.api.letsencrypt.org
+```
 
 Open a terminal on each node and run the following commands:
 

@@ -11,19 +11,19 @@ To set up the Kubernetes control plane, follow these steps:
 ## Initialize the Control Plane
 Run the following command on the control plane node. Replace 192.168.1.100 with the IP address of your control plane node:
 
-    ```sh
-    sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.1.100
-    ```
+```sh
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.1.100
+```
 
 
 Set Up Local kubeconfig
 After the control plane is initialized, set up the local kubeconfig file to interact with the cluster:
 
-    ```sh
-    mkdir -p $HOME/.kube
-    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-    sudo chown $(id -u):$(id -g) $HOME/.kube/config
-    ```
+```sh
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
 
 Install Flannel as the network plugin:
 
@@ -31,10 +31,64 @@ Install Flannel as the network plugin:
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
 
+### Restart Flannel
+
+```sh
+kubectl -n kube-flannel rollout restart daemonset kube-flannel-ds
+```
+
 ## Joining Worker Nodes to the Cluster
 To join worker nodes to the cluster, follow these steps on each worker node.
 
+### Pre-checks
+
+```bash
+sudo systemctl status containerd
+sudo systemctl status kubelet
+```
+if not expected
+
+```bash
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+sudo systemctl status containerd
+
+sudo systemctl restart kubelet
+sudo systemctl enable kubelet
+sudo systemctl status kubelet
+```
+### Get token 
+
+If you missed the token that was displayed when you initialized the cluster, you can look up the currently valid token with the following command
+
+```sh
+kubeadm token list
+```
+
+if the token expired, you can generate a new one.
+
+```sh
+kubeadm token create
+```
+
+then print the hash of CA cert
+
+```sh
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+```
+so you can run the following on worker node
+
+```sh
+sudo su -
+kubeadm join --token <token> <control-plane-host>:<control-plane-port> --discovery-token-ca-cert-hash sha256:<hash>
+```
+
+and then label the worker node
+
+kubectl label node kube-worker-1 node-role.kubernetes.io/worker=
+
 1. Run the Join Command
+
 On each worker node, run the kubeadm join command provided by the kubeadm init output. This command looks something like this:
 
 ```sh
@@ -135,6 +189,7 @@ To install MetalLB, apply the manifest:
 
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+# curl -x 192.168.137.200:7890 -O https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
 ```
 
 then create a file named `metalLb-ip.yaml`
@@ -208,4 +263,27 @@ if successed, we can delete the nginx
 ```sh
 kubectl delete deploy nginx
 kubectl delete svc nginx
+```
+
+## Enable *masqueradeAll*
+
+```sh
+kubectl edit configmap kube-proxy -n kube-system
+```
+
+edit `masqueradeAll` from `false` to `true`
+
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-proxy
+  namespace: kube-system
+    iptables:
+      masqueradeAll: true
+    kind: KubeProxyConfiguration
+    mode: "ipvs"
+    nftables:
+      masqueradeAll: true
 ```

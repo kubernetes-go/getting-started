@@ -154,7 +154,7 @@ edit your `values.pi-hole.yaml`, add these
 ```yaml
 dnsmasq:
   customDnsEntries:
-    - address=/pihole.prod.local/192.168.5.202
+    - address=/foo-bar-local.com/192.168.5.202
 ```
 
 then update your helm release 
@@ -179,14 +179,14 @@ metadata:
   namespace: kube-system
 data:
   custom.server: |
-    prod.local:53 {
+    foo-bar-local.com:53 {
        errors
        cache 30
        forward . 192.168.5.202
     }
 ```
   {{% notice style="tip" %}}
-this means all requestes to domain `prod.local` will query the dns record from server `192.168.5.202`. `prod.local` can be replaced bu your customerize domian.
+this means all requestes to domain `foo-bar-local.com` will query the dns record from server `192.168.5.202`. `foo-bar-local.com` can be replaced bu your customerize domian.
   {{% /notice %}}
 
 then try to monitor the logs 
@@ -199,4 +199,59 @@ if coredns pods does not restart, please try to triiger manually
 
 ```sh
 kubectl rollout restart deployment coredns -n kube-system
+```
+
+
+### Customize your domain in cluster
+
+  {{% notice style="note" %}}
+Please install `whoami` service in `default` namespace, more details please go to [Install Traefik Using Helm]({{% ref "management/ingress-controller" %}}).
+  {{% /notice %}}
+
+
+you can access your service in cluster by these names 
+
+- `service-name.namespace.svc.cluster.local`
+- `service-name.namespace`
+
+install `netshoot`
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netshoot
+spec:
+  containers:
+    - name: netshoot
+      image: nicolaka/netshoot
+      command: ["sleep", "3600"]
+```
+
+### Ensure internal dns works
+
+run shell in pod
+
+```sh
+kubectl 'exec' '-it' 'netshoot' '--namespace' 'default' '--container' 'netshoot' '--' 'sh'
+```
+
+```sh
+traceroute whoami.default
+traceroute to whoami.default (10.107.156.209), 30 hops max, 46 byte packets
+ 1  whoami.default.svc.cluster.local (10.107.156.209)  0.010 ms  0.008 ms  0.006 ms
+```
+
+### Try external dns
+
+go to `pi-hole` admin portal, add a A record
+
+```sh
+whoami.foo-bar-local.com 192.168.5.202
+```
+
+then go back to `busybox`
+
+```sh
+traceroute whoami.foo-bar-local.com
 ```
